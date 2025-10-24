@@ -18,10 +18,11 @@ library(ggplot2)
 ## Image 1
 
 ```{r echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/Speaking-the-world.jpg")
+knitr::include_graphics("img/Speaking-the-world.jpeg")
 ```
 
 _Write your comments about image 1 below_
+The bars are not in proportion to the largest spoken language statistic, i.e, English numbers of speakers is represented as close to Chinese. Graphic is also unnecessary. 
 
 
 
@@ -30,11 +31,11 @@ _Write your comments about image 1 below_
 ## Image 2
 
 ```{r echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/rose-pop-density-total-area-bw.jpg")
+knitr::include_graphics("img/rose-pop-density-total-area-bw.jpeg")
 ```
 
 _Write your comments about image 2 below_
-
+I don't even know what the pie chart is trying to depict. No numbers are shown. It's also really hard to compare the shapes.
 
 
 
@@ -45,19 +46,18 @@ knitr::include_graphics("img/life-expectancy-rule-of-law.png")
 ```
 
 _Write your comments about image 3 below_
-
+Can't read the country names, no title, no y-axis. 
 
 
 
 ## Image 4
 
 ```{r echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/global-income-dist.PNG")
+knitr::include_graphics("img/global-income-dist.png")
 ```
 
 _Write your comments about image 4 below_
-
-
+Scale is not consistent, the distribution of population are stacked ontop of one another, it reads hard.
 
 
 
@@ -71,13 +71,13 @@ staff <- read_csv("data/instructional-staff.csv")
 ## Exercise 1
 
 What is the difference between *wide format* data and *long format* data?
-
+In wide format, x-axis is the independent variable, whilst in long format, y-axis is the independent variable.
 
 Is the format `staff` data *wide* or *long*?
-
+Wide format
 
 How many observations are there in the data set?
-
+11 observations.
 
 
 
@@ -86,12 +86,12 @@ How many observations are there in the data set?
 ```{r pivoting}
 ## Uncomment and complete the following code
 
-#staff_long <- ___ %>%
-#  ___(
-#    cols = ____, 
-#    names_to = "_____",
-#    values_to = "percent"
-#    )
+staff_long <- staff %>%
+  pivot_longer(
+    cols = "1975":"2011", 
+    names_to = "year",
+    values_to = "percent"
+    )
 
 ```
 
@@ -100,7 +100,11 @@ How many observations are there in the data set?
 
 ```{r dot-plot}
 # Write your code for Exercise 3 here
-
+ggplot(data = staff_long,
+       mapping = aes(x = year,
+                     y = percent,
+                     colour = faculty_type)) + 
+  geom_point()
 
 
 ```
@@ -109,9 +113,12 @@ How many observations are there in the data set?
 
 ```{r bad-line-plot}
 # Write your code for Exercise 4 here
-
-
-
+ggplot(data = staff_long,
+       mapping = aes(x = year,
+                     y = percent,
+                     colour = faculty_type)) + 
+  geom_point() +
+  geom_line()
 ```
 
 ## Exercise 5
@@ -119,14 +126,19 @@ How many observations are there in the data set?
 ```{r mutate-year}
 ## Uncomment and complete the following code
 
-#staff_long <- staff_long %>%
-#  mutate(year = ______(year))
+staff_long <- staff_long %>%
+  mutate(year = as.numeric(year))
 ```
 
 
 ```{r working-line-plot}
 # Write your code for Exercise 5 here
-
+ggplot(data = staff_long,
+       mapping = aes(x = year,
+                     y = percent,
+                     colour = faculty_type)) + 
+  geom_point() +
+  geom_line()
 
 
 ```
@@ -135,7 +147,14 @@ How many observations are there in the data set?
 
 ```{r better-line-plot}
 # Write your code for Exercise 6 here
-
+ggplot(data = staff_long,
+       mapping = aes(x = year,
+                     y = percent,
+                     colour = faculty_type)) + 
+  geom_point() +
+  geom_line() + 
+  labs(color = "Faculty Type", x = "Year", y = "Percentage (%)") +
+  ggtitle("Faculty Type in ___", "1975-2011")
 
 
 
